@@ -30,14 +30,14 @@ const Authentication = () => {
       </View>
 
       <View style={styles.MainContainer}>
-        <AnimatedInput
+        <TextInput
           style={styles.InputContainer}
           onChangeText={setUserName}
           value={userName}
           placeholder="UserName"
           placeholderTextColor="#BBBBBB"
         />
-        <AnimatedInput
+        <TextInput
           style={styles.InputContainer}
           onChangeText={setPassWord}
           placeholder="Password"
