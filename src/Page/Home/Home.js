@@ -1,10 +1,15 @@
 import React, {useState} from 'react';
 import {View, Text, StyleSheet, Image} from 'react-native';
 import TabNavigator from 'react-native-tab-navigator';
+
 import icHome from '../../Assets/Images/home.png';
 import icSearch from '../../Assets/Images/loupe.png';
+import icUser2 from '../../Assets/Images/user2.png';
+import icHome2 from '../../Assets/Images/home2.png';
+import icSearch2 from '../../Assets/Images/loupe2.png';
 import icUser from '../../Assets/Images/user.png';
-import icdata from '../../Assets/Images/dashboard.png';
+import icAlert from '../../Assets/Images/alert.png';
+import icAlert2 from '../../Assets/Images/alert2.png';
 import Dashboard from './Dashboard/Dashboard';
 
 const Home = () => {
@@ -14,12 +19,6 @@ const Home = () => {
     setSelectedTab('Contact');
   };
 
-  const HandleSelectNotify = () => {
-    setSelectedTab('Notify');
-  };
-  const HandleSelectCart = () => {
-    setSelectedTab('Cart');
-  };
   return (
     <TabNavigator tabBarStyle={{height: 53}}>
       <TabNavigator.Item
@@ -28,7 +27,7 @@ const Home = () => {
         titleStyle={styles.tabTitle}
         renderIcon={() => <Image source={icHome} style={styles.wrapperImage} />}
         renderSelectedIcon={() => (
-          <Image source={icHome} style={styles.wrapperImage} />
+          <Image source={icHome2} style={styles.wrapperImage} />
         )}
         onPress={() => setSelectedTab('Dashboard')}>
         <Dashboard />
@@ -38,9 +37,11 @@ const Home = () => {
         selected={selectedTab === 'Data'}
         title={'Data'}
         titleStyle={styles.tabTitle}
-        renderIcon={() => <Image source={icdata} style={styles.wrapperImage} />}
+        renderIcon={() => (
+          <Image source={icAlert} style={styles.wrapperImage} />
+        )}
         renderSelectedIcon={() => (
-          <Image source={icdata} style={styles.wrapperImage} />
+          <Image source={icAlert2} style={styles.wrapperImage} />
         )}
         onPress={() => setSelectedTab('Data')}>
         <Dashboard />
@@ -54,7 +55,7 @@ const Home = () => {
           <Image source={icSearch} style={styles.wrapperImage} />
         )}
         renderSelectedIcon={() => (
-          <Image source={icSearch} style={styles.wrapperImage} />
+          <Image source={icSearch2} style={styles.wrapperImage} />
         )}
         onPress={() => setSelectedTab('Search')}>
         <Dashboard />
@@ -66,7 +67,7 @@ const Home = () => {
         titleStyle={styles.tabTitle}
         renderIcon={() => <Image source={icUser} style={styles.wrapperImage} />}
         renderSelectedIcon={() => (
-          <Image source={icUser} style={styles.wrapperImage} />
+          <Image source={icUser2} style={styles.wrapperImage} />
         )}
         onPress={() => HandleSelectContact()}>
         <Dashboard />
