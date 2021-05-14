@@ -11,6 +11,9 @@ import {
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import icAI from '../../Assets/Images/chip.png';
+import {Sae} from 'react-native-textinput-effects';
+import icPassWord from '../../Assets/Images/password.png';
+import icUser from '../../Assets/Images/user3.png';
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
@@ -20,7 +23,7 @@ const Authentication = () => {
   const [passWord, setPassWord] = useState('');
 
   const HandleLogin = () => {
-    navigation.replace('Home');
+    navigation.navigate('Home');
   };
   return (
     <View style={styles.AuthenticationWrapper}>
@@ -30,20 +33,36 @@ const Authentication = () => {
       </View>
 
       <View style={styles.MainContainer}>
-        <TextInput
-          style={styles.InputContainer}
-          onChangeText={setUserName}
-          value={userName}
-          placeholder="UserName"
-          placeholderTextColor="#BBBBBB"
-        />
-        <TextInput
-          style={styles.InputContainer}
-          onChangeText={setPassWord}
-          placeholder="Password"
-          placeholderTextColor="#BBBBBB"
-          value={passWord}
-        />
+        <View style={styles.inlineInput}>
+          <Image source={icUser} style={styles.imageIC} />
+          <View>
+            <Text style={styles.TextHeaderInput}>Username</Text>
+            <TextInput
+              style={styles.InputContainer}
+              onChangeText={setUserName}
+              value={userName}
+              fontFamily={'sans-serif'}
+
+              // placeholder="UserName"
+              // placeholderTextColor="#BBBBBB"
+            />
+          </View>
+        </View>
+
+        <View style={styles.inlineInput}>
+          <Image source={icPassWord} style={styles.imageIC} />
+          <View>
+            <Text style={styles.TextHeaderInput}>Password</Text>
+            <TextInput
+              style={styles.InputContainer}
+              onChangeText={setPassWord}
+              // placeholder="Password"
+              // placeholderTextColor="#BBBBBB"
+              value={passWord}
+            />
+          </View>
+        </View>
+
         <TouchableOpacity style={styles.BtnContainer} onPress={HandleLogin}>
           <Text style={styles.TextBtnLogin}>Log In</Text>
         </TouchableOpacity>
@@ -102,13 +121,12 @@ const styles = StyleSheet.create({
   },
   InputContainer: {
     height: 46,
-    width: windowWidth - 80,
+    width: windowWidth - 110,
     marginTop: 20,
     borderBottomWidth: 2,
     color: '#2e475c',
     borderBottomColor: '#2e475c',
-    paddingBottom: -4,
-
+    paddingBottom: -8,
     fontFamily: 'sans-serif',
     fontSize: 14,
   },
@@ -126,6 +144,26 @@ const styles = StyleSheet.create({
     fontFamily: 'sans-serif',
     fontWeight: 'bold',
     fontSize: 16,
+  },
+  imageIC: {
+    width: 18,
+    height: 18,
+    marginRight: 14,
+    marginBottom: 7,
+    marginLeft: -10,
+  },
+  inlineInput: {
+    flexDirection: 'row',
+    alignItems: 'flex-end',
+  },
+  TextHeaderInput: {
+    justifyContent: 'flex-start',
+    marginTop: 30,
+    marginBottom: -30,
+    color: '#6A6A6A',
+    fontWeight: 'bold',
+    fontFamily: 'sans-serif',
+    fontSize: 10,
   },
 });
 
