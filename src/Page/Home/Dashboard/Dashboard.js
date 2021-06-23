@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
@@ -13,49 +13,56 @@ import {
 
 import icAI from '../../../Assets/Images/chip.png';
 import icResult from '../../../Assets/Images/notepad.png';
-import {
-  LineChart,
-  BarChart,
-  PieChart,
-  ProgressChart,
-  ContributionGraph,
-  StackedBarChart,
-} from 'react-native-chart-kit';
+
+import {connect} from 'react-redux';
+import {useNavigation} from '@react-navigation/native';
+
+import ResultService from '../../../Config/API/Result/ResultService';
+import {setDataResult} from '../../../Config/Redux/Action';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
-const Dashboard = () => {
-  const data = {
-    labels: ['7h00', '9h00', '11h00', '13h00', '15h00', '17h00'],
-    datasets: [
-      {
-        data: [30, 45, 28, 80, 99, 43],
-        color: (opacity = 1) => `rgba(134, 65, 244, ${opacity})`, // optional
-        strokeWidth: 2, // optional
-      },
-    ],
-    legend: ['Result Days'], // optional
+const Dashboard = props => {
+  const navigation = useNavigation();
+  const [result, setResult] = useState();
+  const [resultBack, setBackResult] = useState();
+  const [ResultWarning, setResultWarning] = useState();
+  const [student, setStudent] = useState();
+
+  useEffect(() => {
+    async function getData() {
+      ResultService.getResult().then(res => {
+        if (res.dataString === 'Success') {
+          setResult(res.data);
+          setBackResult(res.data);
+          props.setDataResult(res.data);
+        }
+      });
+
+      ResultService.getResultWarning().then(res => {
+        if (res.dataString === 'Success') {
+          setResultWarning(res.data);
+        }
+      });
+
+      ResultService.getStudents().then(res => {
+        if (res.dataString === 'Success') {
+          setStudent(res.data);
+        }
+      });
+    }
+
+    getData();
+  }, [student]);
+
+  const handleTranferPage = (data, title) => {
+    navigation.navigate('ResultDetail', {data, title});
   };
 
-  const chartConfig = {
-    backgroundGradientFrom: 'black',
-    backgroundGradientFromOpacity: 0,
-    backgroundGradientTo: 'black',
-    backgroundGradientToOpacity: 0.5,
-    color: (opacity = 1) => `rgba(26, 255, 146, ${opacity})`,
-    strokeWidth: 2, // optional, default 3
-    barPercentage: 0.5,
-    useShadowColorFromDataset: false, // optional
+  const handleTranferPageGetStudent = (data, title) => {
+    navigation.navigate('GetStudents', {data, title});
   };
 
-  const dataTable = {
-    labels: ['January', 'February', 'March', 'April', 'May', 'June'],
-    datasets: [
-      {
-        data: [20, 45, 28, 80, 99, 43],
-      },
-    ],
-  };
   return (
     <View style={styles.AuthenticationWrapper}>
       <View style={styles.header}>
@@ -71,12 +78,19 @@ const Dashboard = () => {
             </View>
 
             <View style={styles.textResultContainer}>
-              <Text style={styles.textHeadStyleResult}>Result</Text>
-              <Text style={styles.textStyleResult}>3021 Result</Text>
+              <Text style={styles.textHeadStyleResult}>Results</Text>
+              <Text style={styles.textStyleResult}>
+                {result ? result.length : null}
+              </Text>
             </View>
           </View>
           <View style={styles.lineBottom} />
-          <Text style={styles.Seemore}>See more</Text>
+          <TouchableOpacity
+            onPress={() =>
+              handleTranferPage(result, 'Temperature measurement results')
+            }>
+            <Text style={styles.Seemore}>See more</Text>
+          </TouchableOpacity>
         </View>
 
         <View style={styles.resultWrapper}>
@@ -86,12 +100,19 @@ const Dashboard = () => {
             </View>
 
             <View style={styles.textResultContainer}>
-              <Text style={styles.textHeadStyleResult}>Student</Text>
-              <Text style={styles.textStyleResult}>1020 Student</Text>
+              <Text style={styles.textHeadStyleResult}>Students</Text>
+              <Text style={styles.textStyleResult}>
+                {student ? student.length : null}
+              </Text>
             </View>
           </View>
           <View style={styles.lineBottom} />
-          <Text style={styles.Seemore}>See more</Text>
+          <TouchableOpacity
+            onPress={() =>
+              handleTranferPageGetStudent(student, 'Student Results')
+            }>
+            <Text style={styles.Seemore}>See more</Text>
+          </TouchableOpacity>
         </View>
 
         <View style={styles.resultWrapper}>
@@ -102,60 +123,16 @@ const Dashboard = () => {
 
             <View style={styles.textResultContainer}>
               <Text style={styles.textHeadStyleResult}>Special results</Text>
-              <Text style={styles.textStyleResult}>102 Result</Text>
+              <Text style={styles.textStyleResult}>
+                {ResultWarning ? ResultWarning.length : null}
+              </Text>
             </View>
           </View>
           <View style={styles.lineBottom} />
-          <Text style={styles.Seemore}>See more</Text>
-        </View>
-
-        <View style={styles.resultAllWrapper}>
-          <View style={styles.headContainer}>
-            <Text style={styles.textHeadStyleTable}>Result</Text>
-            <Text style={styles.textStyleTable}>Temperature student</Text>
-          </View>
-          <View style={styles.textHeadTitle}>
-            <Text style={styles.textTitleID}>ID</Text>
-            <Text style={styles.textTitleName}>Name</Text>
-            <Text style={styles.textTitleAge}>Age</Text>
-            <Text style={styles.textTitleTemp}>Temperature</Text>
-          </View>
-          <View style={styles.textHeadTitle}>
-            <Text style={styles.textTitleID}>1</Text>
-            <Text style={styles.textTitleName}>Tran Van Van Tran</Text>
-            <Text style={styles.textTitleAge}>21</Text>
-            <Text style={styles.textTitleTemp}>35</Text>
-          </View>
-          <View style={styles.textHeadTitle}>
-            <Text style={styles.textTitleID}>2</Text>
-            <Text style={styles.textTitleName}>Vien Mai The</Text>
-            <Text style={styles.textTitleAge}>20</Text>
-            <Text style={styles.textTitleTemp}>40</Text>
-          </View>
-        </View>
-        <View style={styles.resultAllWrapper}>
-          <View style={styles.headTempContainer}>
-            <LineChart
-              data={data}
-              width={windowWidth - 53}
-              height={220}
-              bezier
-              chartConfig={chartConfig}
-            />
-          </View>
-          <Text style={styles.textTempStyleTable}>Result in day</Text>
-        </View>
-
-        <View style={styles.resultAllWrapper}>
-          <View style={styles.headResultContainer}>
-            <BarChart
-              data={dataTable}
-              width={windowWidth - 52}
-              height={220}
-              chartConfig={chartConfig}
-            />
-          </View>
-          <Text style={styles.textTempStyleTable}>Result In Year</Text>
+          <TouchableOpacity
+            onPress={() => handleTranferPage(ResultWarning, 'Special results')}>
+            <Text style={styles.Seemore}>See more</Text>
+          </TouchableOpacity>
         </View>
       </ScrollView>
     </View>
@@ -168,7 +145,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     paddingBottom: 70,
-    height: windowHeight / 3,
+    height: windowHeight / 4,
     width: '100%',
     backgroundColor: '#2e475c',
     borderBottomLeftRadius: 20,
@@ -223,7 +200,7 @@ const styles = StyleSheet.create({
     paddingTop: 15,
   },
   imageContainer: {
-    backgroundColor: '#A3BCDB',
+    backgroundColor: '#2e475c',
     height: 70,
     width: 70,
     marginLeft: 15,
@@ -234,7 +211,7 @@ const styles = StyleSheet.create({
   },
 
   imageContainerStudent: {
-    backgroundColor: '#445C2C',
+    backgroundColor: '#2e475c',
     height: 70,
     width: 70,
     marginLeft: 15,
@@ -245,7 +222,7 @@ const styles = StyleSheet.create({
   },
 
   imageContainerResult: {
-    backgroundColor: '#A76C42',
+    backgroundColor: '#2e475c',
     height: 70,
     width: 70,
     marginLeft: 15,
@@ -346,6 +323,7 @@ const styles = StyleSheet.create({
   textStyleResult: {
     fontFamily: 'sans-serif',
     fontSize: 14,
+    marginTop: 5,
   },
   textHeadStyleResult: {
     fontFamily: 'sans-serif',
@@ -358,7 +336,7 @@ const styles = StyleSheet.create({
     fontSize: 10,
     marginLeft: 20,
     marginTop: 5,
-    color: '#E19E2C',
+    color: '#000000',
   },
   tinyLogoIC: {
     height: 40,
@@ -370,7 +348,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
     paddingLeft: 10,
     paddingTop: 10,
-    backgroundColor: '#3C4C34',
+    backgroundColor: '#2e475c',
   },
   headTempContainer: {
     marginTop: 2,
@@ -378,7 +356,7 @@ const styles = StyleSheet.create({
     // marginHorizontal: 10,
     marginLeft: 2,
     // paddingTop: 10,
-    backgroundColor: '#2C445C',
+    backgroundColor: '#2e475c',
   },
   headResultContainer: {
     // marginHorizontal: 10,
@@ -434,4 +412,4 @@ const styles = StyleSheet.create({
     width: '25%',
   },
 });
-export default Dashboard;
+export default connect(null, {setDataResult})(Dashboard);

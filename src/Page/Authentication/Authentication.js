@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   Dimensions,
   Image,
+  Alert,
   ImageBackground,
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
@@ -14,6 +15,9 @@ import icAI from '../../Assets/Images/chip.png';
 import {Sae} from 'react-native-textinput-effects';
 import icPassWord from '../../Assets/Images/password.png';
 import icUser from '../../Assets/Images/user3.png';
+
+import AuthenticationService from '../../Config/API/User/AuthenticationService';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
@@ -22,8 +26,42 @@ const Authentication = () => {
   const [userName, setUserName] = useState('');
   const [passWord, setPassWord] = useState('');
 
+  useEffect(() => {
+    async function checkLogin() {
+      var check = await AsyncStorage.getItem('@Login');
+      if (check !== null) {
+        navigation.navigate('Home');
+      }
+    }
+
+    checkLogin();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   const HandleLogin = () => {
-    navigation.navigate('Home');
+    if (userName === '' && passWord === '') {
+    } else {
+      let params = {
+        username: userName,
+        password: passWord,
+      };
+
+      AuthenticationService.postLogin(params)
+        .then(res => {
+          if (res.dataString === 'success') {
+            AsyncStorage.setItem('@Login', JSON.stringify(res.token));
+            AuthenticationService.saveDataLogin(res.token);
+            navigation.navigate('Home');
+          } else {
+            Alert.alert(`Notify`, `Invalid password`, [{text: `Confirm`}], {
+              cancelable: false,
+            });
+          }
+        })
+        .catch(error => {
+          console.error(error);
+        });
+    }
+    // navigation.navigate('Home');
   };
   return (
     <View style={styles.AuthenticationWrapper}>
@@ -42,9 +80,6 @@ const Authentication = () => {
               onChangeText={setUserName}
               value={userName}
               fontFamily={'sans-serif'}
-
-              // placeholder="UserName"
-              // placeholderTextColor="#BBBBBB"
             />
           </View>
         </View>
@@ -56,9 +91,8 @@ const Authentication = () => {
             <TextInput
               style={styles.InputContainer}
               onChangeText={setPassWord}
-              // placeholder="Password"
-              // placeholderTextColor="#BBBBBB"
               value={passWord}
+              secureTextEntry={true}
             />
           </View>
         </View>
