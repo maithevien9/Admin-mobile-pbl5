@@ -30,9 +30,7 @@ const Contact = props => {
   };
 
   const convertDate = date => {
-    var ts = new Date(date);
-    ts.setHours(ts.getHours() + 7);
-    return ts.toUTCString();
+    return moment(date).format('YYYY-MM-DD HH:mm:ss');
   };
   return (
     <View style={styles.AuthenticationWrapper}>

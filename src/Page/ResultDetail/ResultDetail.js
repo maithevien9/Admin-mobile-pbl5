@@ -9,7 +9,7 @@ import {
   StyleSheet,
 } from 'react-native';
 import icAI from '../../Assets/Images/chip.png';
-
+import moment from 'moment';
 import _ from 'lodash';
 import ResultService from '../../Config/API/Result/ResultService';
 
@@ -19,9 +19,7 @@ const windowHeight = Dimensions.get('window').height;
 const ResultDetail = ({route}) => {
   const [results, setResults] = useState(route.params.data);
   const convertDate = date => {
-    var ts = new Date(date);
-    ts.setHours(ts.getHours() + 7);
-    return ts.toUTCString();
+    return moment(date).format('YYYY-MM-DD HH:mm:ss');
   };
 
   const handleSearch = async text => {
