@@ -25,9 +25,7 @@ const StudentDetail = ({route}) => {
   const [user, setUser] = useState();
   const {address, NAME, sex, age, id, idRole} = route.params.result;
 
-  useEffect(() => {
-    console.log();
-  }, []);
+ 
   const handleLogOut = async () => {
     const data = '';
     await AsyncStorage.setItem('@Login', data);

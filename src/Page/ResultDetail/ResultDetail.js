@@ -47,7 +47,7 @@ const ResultDetail = ({route}) => {
               style={styles.InputContainer}
               onChangeText={handleSearch}
               placeholderTextColor="#666666"
-              placeholder="Search result"
+              placeholder="Search result by Name"
               fontFamily={'sans-serif'}
             />
           </View>

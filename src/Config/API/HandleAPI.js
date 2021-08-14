@@ -4,7 +4,8 @@ const header = {
   Authorization: '',
 };
 
-var IP = 'http://192.168.1.10:8008/';
+var IP = 'https://project-pbl5.herokuapp.com/';
+// var IP = 'http://192.168.0.102:8008/';
 function APIGet(url, token) {
   if (token) {
     header.Authorization = `Bearer ${token}`;

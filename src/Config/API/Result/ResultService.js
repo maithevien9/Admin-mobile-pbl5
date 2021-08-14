@@ -8,7 +8,7 @@ const getResultWarning = async () => {
 };
 
 const getStudents = async () => {
-  return await HandleAPI.APIGet('GetUser/2');
+  return await HandleAPI.APIGet('GetUser/1');
 };
 
 const getCountResult = async () => {

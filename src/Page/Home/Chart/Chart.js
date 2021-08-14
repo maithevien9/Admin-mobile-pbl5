@@ -46,8 +46,9 @@ const Chart = () => {
     for (let i = 1; i <= 7; i++) {
       result.setDate(result.getDate() - i + 1);
       resultDay.push({result: result});
+      const month = result.getMonth() + 1;
 
-      Day.push(result.getDate() + '-' + result.getMonth());
+      Day.push(result.getDate() + '-' + month);
       result = new Date();
     }
     setDay(Day.reverse());
@@ -85,12 +86,6 @@ const Chart = () => {
       </View>
       <View style={styles.MainContainer}>
         <View style={styles.headResultContainer}>
-          {/* <BarChart
-            data={dataTable}
-            width={windowWidth - 62}
-            height={420}
-            chartConfig={chartConfig}
-          /> */}
           <LineChart
             data={data}
             width={windowWidth - 59}
