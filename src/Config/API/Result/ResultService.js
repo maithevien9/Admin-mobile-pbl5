@@ -1,10 +1,10 @@
 import HandleAPI from '../HandleAPI';
 
 const getResult = async () => {
-  return await HandleAPI.APIGet('Result');
+  return await HandleAPI.APIGet('Result-secondary');
 };
 const getResultWarning = async () => {
-  return await HandleAPI.APIGet('ResultWarning');
+  return await HandleAPI.APIGet('ResultWarning-secondary');
 };
 
 const getStudents = async () => {

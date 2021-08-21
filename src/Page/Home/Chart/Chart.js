@@ -43,7 +43,6 @@ const Chart = () => {
     var resultDay = [];
     var Day = [];
     var result = new Date();
-    console.log(result.getDate());
     for (let i = 0; i < 7; i++) {
       result.setDate(result.getDate() - i);
       resultDay.push({result: result});

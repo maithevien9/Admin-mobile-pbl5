@@ -10,7 +10,7 @@ const getMe = async () => {
 };
 
 const UpdateUser = async body => {
-  return await HandleApi.APIPut('ChangInformationStudent', body);
+  return await HandleApi.APIPut('ChangInformationStudent-secondary', body);
 };
 const UserService = {
   getMe,
